@@ -23,6 +23,22 @@ func (q *Queries) ClearResetToken(ctx context.Context, id int64) error {
 	return err
 }
 
+const createContactMessage = `-- name: CreateContactMessage :exec
+INSERT INTO contact_messages (name, email, message)
+VALUES (?, ?, ?)
+`
+
+type CreateContactMessageParams struct {
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	Message string `json:"message"`
+}
+
+func (q *Queries) CreateContactMessage(ctx context.Context, arg CreateContactMessageParams) error {
+	_, err := q.exec(ctx, q.createContactMessageStmt, createContactMessage, arg.Name, arg.Email, arg.Message)
+	return err
+}
+
 const createCustomer = `-- name: CreateCustomer :execresult
 INSERT INTO customers (full_name, phone, national_id)
 VALUES (?, ?, ?)

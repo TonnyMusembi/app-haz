@@ -95,3 +95,9 @@ SELECT COUNT(*) FROM users WHERE email = ?;
 
 -- name: PhoneExists :one
 SELECT COUNT(*) FROM users WHERE phone = ?;
+
+
+-- name: CreateContactMessage :exec
+INSERT INTO contact_messages (name, email, message)
+VALUES (?, ?, ?);
+

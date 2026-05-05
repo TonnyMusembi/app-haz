@@ -27,6 +27,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.clearResetTokenStmt, err = db.PrepareContext(ctx, clearResetToken); err != nil {
 		return nil, fmt.Errorf("error preparing query ClearResetToken: %w", err)
 	}
+	if q.createContactMessageStmt, err = db.PrepareContext(ctx, createContactMessage); err != nil {
+		return nil, fmt.Errorf("error preparing query CreateContactMessage: %w", err)
+	}
 	if q.createCustomerStmt, err = db.PrepareContext(ctx, createCustomer); err != nil {
 		return nil, fmt.Errorf("error preparing query CreateCustomer: %w", err)
 	}
@@ -104,6 +107,11 @@ func (q *Queries) Close() error {
 	if q.clearResetTokenStmt != nil {
 		if cerr := q.clearResetTokenStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing clearResetTokenStmt: %w", cerr)
+		}
+	}
+	if q.createContactMessageStmt != nil {
+		if cerr := q.createContactMessageStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing createContactMessageStmt: %w", cerr)
 		}
 	}
 	if q.createCustomerStmt != nil {
@@ -261,6 +269,7 @@ type Queries struct {
 	db                        DBTX
 	tx                        *sql.Tx
 	clearResetTokenStmt       *sql.Stmt
+	createContactMessageStmt  *sql.Stmt
 	createCustomerStmt        *sql.Stmt
 	createInstallmentStmt     *sql.Stmt
 	createLoanStmt            *sql.Stmt
@@ -291,6 +300,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 		db:                        tx,
 		tx:                        tx,
 		clearResetTokenStmt:       q.clearResetTokenStmt,
+		createContactMessageStmt:  q.createContactMessageStmt,
 		createCustomerStmt:        q.createCustomerStmt,
 		createInstallmentStmt:     q.createInstallmentStmt,
 		createLoanStmt:            q.createLoanStmt,

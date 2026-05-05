@@ -25,6 +25,7 @@ func main() {
 	loanHandler := handlers.NewLoanHandler(queries)
 	customerHandler := handlers.NewCustomersHandler(queries)
 	userHandler := handlers.NewUserHandler(queries)
+	contactHandler := handlers.NewContactHandler(queries)
 
 	r := gin.Default()
 	gin.SetMode(gin.DebugMode)
@@ -40,6 +41,7 @@ func main() {
 	r.GET("/customers", customerHandler.GetCustomers)
 	r.POST("/users", userHandler.CreateUser)
 	r.GET("/users/:id", userHandler.GetUser)
+	r.POST("/contact", contactHandler.CreateContact)
 	fmt.Println("Server is running on port 8080")
 	slog.Info("server is running on port 8080")
 

@@ -98,6 +98,14 @@ func (ns NullUsersRole) Value() (driver.Value, error) {
 	return string(ns.UsersRole), nil
 }
 
+type ContactMessage struct {
+	ID        int64        `json:"id"`
+	Name      string       `json:"name"`
+	Email     string       `json:"email"`
+	Message   string       `json:"message"`
+	CreatedAt sql.NullTime `json:"created_at"`
+}
+
 type Customer struct {
 	ID         int64          `json:"id"`
 	FullName   sql.NullString `json:"full_name"`
